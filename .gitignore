@@ -1,0 +1,76 @@
+# ============================================================
+# Python
+# ============================================================
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# ============================================================
+# Environments
+# ============================================================
+.env
+.venv/
+venv/
+env/
+
+# ============================================================
+# Jupyter
+# ============================================================
+.ipynb_checkpoints/
+
+# ============================================================
+# Dataset (raw audio + generated intermediate artifacts)
+# Never commit personal/local dataset copies or derived audio.
+# ============================================================
+data/raw/
+data/processed/
+*.wav
+*.mp3
+*.flac
+*.m4a
+
+# ============================================================
+# Extracted feature tensors (large binary arrays, regenerable)
+# ============================================================
+*.npy
+*.npz
+
+# ============================================================
+# Trained models / checkpoints (large binary artifacts)
+# ============================================================
+models/
+checkpoints/
+*.keras
+*.h5
+
+# ============================================================
+# Logs
+# ============================================================
+logs/
+*.log
+
+# ============================================================
+# Results (regenerable; keep only what you intend to publish)
+# Uncomment the following lines if you don't want to version
+# generated figures/metrics at all:
+# results/figures/*
+# results/metrics/*
+# !results/figures/.gitkeep
+# !results/metrics/.gitkeep
+
+# ============================================================
+# OS files
+# ============================================================
+.DS_Store
+Thumbs.db
+
+# ============================================================
+# Editors / IDEs
+# ============================================================
+.vscode/
+.idea/
+*.swp
