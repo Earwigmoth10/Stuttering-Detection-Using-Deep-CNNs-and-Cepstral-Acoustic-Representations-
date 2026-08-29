@@ -8,11 +8,12 @@ A convolutional neural network (CNN) system that classifies speech recordings as
 
 ---
 
-## 📌 Overview
+##  Overview
 
 Stuttering is a speech-fluency disorder characterized by disruptions in the timing, rhythm, and smooth production of speech — sound/syllable repetitions, prolongations, and blocks. Clinical assessment has traditionally relied on manual perceptual judgment by a speech-language pathologist, which is time-consuming and susceptible to inter-rater disagreement. This motivates automatic, signal-processing- and deep-learning-based approaches that can support fluency screening, therapy monitoring, and longitudinal tracking.
 
-![Types of Speech Fluency Disorders](assets/ChatGPT_Image_Aug_11__2026__11_01_56_PM.png)
+![Types of Speech Fluency Disorders](<img width="1536" height="1024" alt="ChatGPT Image Aug 11, 2026, 11_01_56 PM" src="https://github.com/user-attachments/assets/509e1a01-153b-4899-8e66-ecbd48643031" />
+)
 *Types of speech fluency disorders — normal fluent speech, developmental stuttering (repetition, prolongation, block), and other fluency disorders, together with common manifestations and documented impacts of stuttering.*
 
 This project proposes a CNN-based binary stuttering detector (**Non-stuttered** vs. **Stuttered**) trained on 16 kHz audio represented as stacked **MFCC + Δ + ΔΔ (delta / delta-delta)** cepstral feature tensors, under an explicit, programmatically-verified **speaker-disjoint** train/validation/test split.
@@ -24,7 +25,7 @@ Key properties of the system:
 
 ---
 
-## 🎯 Objectives
+##  Objectives
 
 - Build a complete, reproducible **preprocessing → feature-extraction → CNN classification** pipeline for binary stuttering detection, with parameters (sample rate, window/hop size, feature dimensionality) traceable to the implementation.
 - Apply and **verify** a genuinely speaker-independent partitioning strategy at the level of individual speakers (not individual recordings), with an explicit, programmatic leakage check.
@@ -33,7 +34,7 @@ Key properties of the system:
 
 ---
 
-## 🧠 Proposed Methodology
+##  Proposed Methodology
 
 ```
 Audio Input
@@ -52,7 +53,7 @@ The pipeline comprises seven sequential stages, matching the implementation: (1)
 
 ---
 
-## 🎙️ Dataset
+##  Dataset
 
 The working corpus was built from **two sources**: a normal-speech recordings collection, and a stuttering-speech dataset whose clips were originally categorized (by filename) as **Fluent** or **Dysfluent** speech from speakers who stutter.
 
@@ -96,7 +97,7 @@ This reflects a clinically motivated distinction: both Normal recordings (non-st
 
 ---
 
-## 📊 Dataset Organization
+##  Dataset Organization
 
 Folder structure as referenced in the project's preprocessing/figure-generation code:
 
@@ -121,7 +122,7 @@ Example stuttering-clip filename: `M_0030_16y4m_1_dysfluent_000.wav` (speaker co
 
 ---
 
-## 🔊 Audio Preprocessing
+##  Audio Preprocessing
 
 Every recording passes through a deterministic preprocessing pipeline before feature extraction:
 
@@ -147,7 +148,7 @@ Steps: **load & resample to 16 kHz mono → replace non-finite samples → trim 
 
 ---
 
-## 🧬 Feature Representation
+##  Feature Representation
 
 Feature extraction is a separate stage from audio cleaning. Each cleaned waveform is truncated/zero-padded to a fixed length of **5.0 s (80,000 samples at 16 kHz)**, so every recording produces an identically shaped feature tensor for batched CNN training.
 
@@ -176,7 +177,7 @@ Feature extraction is a separate stage from audio cleaning. Each cleaned wavefor
 
 ---
 
-## 🗣️ Speaker Identification & Speaker-Independent Partitioning
+##  Speaker Identification & Speaker-Independent Partitioning
 
 Speaker identity is required to guarantee that no individual's voice characteristics appear in more than one of the train/validation/test partitions.
 
@@ -196,7 +197,7 @@ Because partitioning is speaker-level rather than recording-level, class balance
 
 ---
 
-## 🏗️ Model Architecture — CNN V2
+##  Model Architecture — CNN V2
 
 `CNN V2` (saved as `cnn_v2_best.keras`) is the model whose results are reported in this project. It is a 3-block 2D CNN operating directly on the 120 × 313 × 1 MFCC+Δ+ΔΔ tensor:
 
@@ -233,7 +234,7 @@ Because partitioning is speaker-level rather than recording-level, class balance
 
 ---
 
-## 📈 Results
+##  Results
 
 Evaluated on the held-out, speaker-disjoint test set (2,152 recordings, 7 speakers, none of whom appear in training or validation).
 
@@ -281,13 +282,13 @@ Evaluated on the held-out, speaker-disjoint test set (2,152 recordings, 7 speake
 
 ---
 
-## ⚖️ Discussion — Precision/Recall Trade-off
+##  Discussion — Precision/Recall Trade-off
 
 The model achieves strong recall (96.35%) on the minority Stuttered class — of 438 genuinely stuttered test recordings, only 16 were missed. For a screening/fluency-monitoring application, this is a desirable trade-off: a missed stuttering event (false negative) is more costly than a false positive (166 cases here), which can be reviewed and dismissed by a human evaluator. Precision (71.77%) reflects this asymmetry, plausibly influenced by the ~5.5:1 Non-stuttered:Stuttered class imbalance in the training data (7,942 vs. 1,443 recordings).
 
 ---
 
-## 🧾 Limitations
+##  Limitations
 
 - **Dataset scale and speaker diversity** — only 44 unique speakers total, with just 7 held out for testing and 7 for validation; performance estimates on such a small speaker-level test set carry non-trivial variance.
 - **Class imbalance** — the Stuttered class is ~18% of the overall corpus, plausibly contributing to the precision/recall asymmetry.
@@ -300,7 +301,7 @@ The model achieves strong recall (96.35%) on the minority Stuttered class — of
 
 ---
 
-## 🚀 Repository Structure
+##  Repository Structure
 
 **[ADD INFORMATION]** — populate with your actual repository layout once finalized, e.g.:
 
@@ -315,7 +316,7 @@ The model achieves strong recall (96.35%) on the minority Stuttered class — of
 └── README.md
 ```
 
-## 🛠️ Setup
+##  Setup
 
 ```bash
 # [ADD INFORMATION] — confirm exact package/version pins used for this project
@@ -324,13 +325,13 @@ pip install pandas numpy librosa soundfile scikit-learn tensorflow tqdm matplotl
 
 Key libraries used in this project: `pandas`, `NumPy`, `librosa`, `soundfile`, `scikit-learn`, `TensorFlow/Keras`, `tqdm`, `matplotlib`, `seaborn`. Exact library/Python versions and hardware (CPU/GPU) used for training are **[ADD INFORMATION]** — not confirmed from the supplied materials.
 
-## ▶️ Usage
+##  Usage
 
 **[ADD INFORMATION]** — add exact run instructions once the repository's script/notebook entry points are finalized (e.g., how to run preprocessing, feature extraction, training, and evaluation from `model.ipynb`).
 
 ---
 
-## 📚 Citation
+##  Citation
 
 If you use this work, please cite:
 
@@ -349,13 +350,13 @@ J. Speech, Lang., Hear. Res., vol. 52, no. 2, pp. 556–569, 2009.
 
 ---
 
-## 👥 Authors
+##  Authors
 
 - **Laiba Aamir**
 - **Fatima Maqbool**
 - Supervised by **Sir Awais**
 - CYBEX — School of IT Professionals (PVT) Limited, in affiliation with The University of Faisalabad (2026)
 
-## 📄 License
+##  License
 
 **[ADD INFORMATION]** — no license file was included in the supplied materials.
