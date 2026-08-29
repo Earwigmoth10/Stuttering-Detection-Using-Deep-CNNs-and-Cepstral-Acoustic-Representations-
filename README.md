@@ -3,6 +3,7 @@
 A convolutional neural network (CNN) system that classifies speech recordings as **Non-stuttered** or **Stuttered**, trained and evaluated under a strict **speaker-independent** protocol (no speaker's voice appears in more than one of the train/validation/test splits).
 
 > **Note on scope:** the working system implemented and evaluated in this repository (`model.ipynb`, and the accompanying research paper) performs **binary** classification — **Non-stuttered vs. Stuttered**. The original data is drawn from three source-level recording categories (**Normal**, **Fluent**, **Dysfluent**), which are consolidated into the binary target as described in [Dataset Label Transformation](#dataset-label-transformation) below.
+<img width="1536" height="1024" alt="ChatGPT Image Aug 11, 2026, 11_01_56 PM" src="https://github.com/user-attachments/assets/3eb1445c-9ef9-48ba-a5e9-25f2c758c28b" />
 
 `Python` · `TensorFlow / Keras` · `librosa` · `scikit-learn`
 
