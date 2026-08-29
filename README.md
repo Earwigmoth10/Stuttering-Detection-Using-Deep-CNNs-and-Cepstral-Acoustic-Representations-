@@ -3,7 +3,6 @@
 A convolutional neural network (CNN) system that classifies speech recordings as **Non-stuttered** or **Stuttered**, trained and evaluated under a strict **speaker-independent** protocol (no speaker's voice appears in more than one of the train/validation/test splits).
 
 > **Note on scope:** the working system implemented and evaluated in this repository (`model.ipynb`, and the accompanying research paper) performs **binary** classification — **Non-stuttered vs. Stuttered**. The original data is drawn from three source-level recording categories (**Normal**, **Fluent**, **Dysfluent**), which are consolidated into the binary target as described in [Dataset Label Transformation](#dataset-label-transformation) below.
-<img width="1536" height="1024" alt="ChatGPT Image Aug 11, 2026, 11_01_56 PM" src="https://github.com/user-attachments/assets/3eb1445c-9ef9-48ba-a5e9-25f2c758c28b" />
 
 `Python` · `TensorFlow / Keras` · `librosa` · `scikit-learn`
 
@@ -13,7 +12,7 @@ A convolutional neural network (CNN) system that classifies speech recordings as
 
 Stuttering is a speech-fluency disorder characterized by disruptions in the timing, rhythm, and smooth production of speech — sound/syllable repetitions, prolongations, and blocks. Clinical assessment has traditionally relied on manual perceptual judgment by a speech-language pathologist, which is time-consuming and susceptible to inter-rater disagreement. This motivates automatic, signal-processing- and deep-learning-based approaches that can support fluency screening, therapy monitoring, and longitudinal tracking.
 
-![Types of Speech Fluency Disorders](<img width="1536" height="1024" alt="ChatGPT Image Aug 11, 2026, 11_01_56 PM" src="https://github.com/user-attachments/assets/509e1a01-153b-4899-8e66-ecbd48643031" />
+<img width="1536" height="1024" alt="ChatGPT Image Aug 11, 2026, 11_01_56 PM" src="https://github.com/user-attachments/assets/3eb1445c-9ef9-48ba-a5e9-25f2c758c28b" />
 )
 *Types of speech fluency disorders — normal fluent speech, developmental stuttering (repetition, prolongation, block), and other fluency disorders, together with common manifestations and documented impacts of stuttering.*
 
@@ -47,7 +46,8 @@ Audio Input
   → Classification (0.5 threshold) → Non-stuttered / Stuttered
 ```
 
-![Speaker-Independent Stuttering Detection Framework](assets/ChatGPT_Image_Aug_11__2026__11_37_44_PM.png)
+<img width="1608" height="978" alt="ChatGPT Image Aug 11, 2026, 11_37_44 PM" src="https://github.com/user-attachments/assets/c1194737-df18-4cc9-9ab0-ba73dfd9ff4d" />
+
 *End-to-end framework: raw audio dataset → data cleaning → audio preprocessing → MFCC-based feature extraction → CNN V2 classification → prediction output, plus the speaker-independent train/validation/test partitioning used for evaluation.*
 
 The pipeline comprises seven sequential stages, matching the implementation: (1) deterministic audio preprocessing, (2) binary label transformation of the original three-way labels, (3) speaker identification and speaker-independent partitioning, (4) cepstral feature extraction (MFCC + Δ + ΔΔ), (5) CNN feature learning (CNN V2), (6) class-weighted / regularized optimization with adaptive learning-rate control and early stopping, and (7) evaluation on a held-out, speaker-disjoint test partition.
@@ -141,10 +141,10 @@ Every recording passes through a deterministic preprocessing pipeline before fea
 
 Steps: **load & resample to 16 kHz mono → replace non-finite samples → trim leading/trailing silence (30 dB threshold) → discard clips shorter than 0.20 s → peak-normalize amplitude → persist cleaned 16 kHz mono audio.**
 
-![Waveform comparison of Normal, Fluent, and Dysfluent speech](assets/Figure_1_Waveform_Comparison.png)
+<img width="7200" height="5392" alt="Figure_1_Waveform_Comparison" src="https://github.com/user-attachments/assets/f51f70de-cc60-4a87-8dce-ac5ecf7a2330" />
 *Temporal (waveform) characteristics of Normal, Fluent, and Dysfluent speech signals — differences in amplitude envelope and pause structure across the three original recording categories.*
 
-![Spectrogram comparison of Normal, Fluent, and Dysfluent speech](assets/Figure_6_Spectrogram_Comparison.png)
+<img width="6602" height="5899" alt="Figure_6_Spectrogram_Comparison" src="https://github.com/user-attachments/assets/a2a399a6-39a5-46af-8518-9c6cc4f72aa9" />
 *Time–frequency (STFT spectrogram) comparison of the three original speech categories. These spectrogram/waveform visualizations are used only for illustrative acoustic analysis — they are **not** the representation the CNN receives as input (see below).*
 
 ---
@@ -165,13 +165,13 @@ Feature extraction is a separate stage from audio cleaning. Each cleaned wavefor
 | **Final feature tensor** | **120 × 313 (reshaped to 120 × 313 × 1)** |
 | Standardization | Per-recording, per-coefficient (zero mean, unit variance) |
 
-![MFCC, delta, and delta-delta coefficients](assets/ChatGPT_Image_Aug_13__2026__12_28_20_AM.png)
+<img width="1804" height="872" alt="ChatGPT Image Aug 13, 2026, 12_28_20 AM" src="https://github.com/user-attachments/assets/d1b7594f-db35-4648-9239-90cc3a6966f8" />
 *Representative MFCC (A), first-order delta (B), and second-order delta-delta (C) coefficients for one recording across all 313 analysis frames — together forming the 120-row feature tensor.*
 
-![Feature tensor construction](assets/ChatGPT_Image_Aug_13__2026__12_56_14_AM.png)
+<img width="1762" height="893" alt="ChatGPT Image Aug 13, 2026, 12_56_14 AM" src="https://github.com/user-attachments/assets/34cd038e-d669-4bea-9035-fe98c9ac5006" />
 *Construction of the stacked 120 × 313 × 1 feature tensor from the MFCC, Δ, and ΔΔ channels, and its role as the direct input to the CNN V2 architecture.*
 
-![Correlation among MFCC-based acoustic feature families](assets/Figure_Feature_Family_Correlation_Heatmap.png)
+<img width="5147" height="4140" alt="Figure_Feature_Family_Correlation_Heatmap" src="https://github.com/user-attachments/assets/22e82cd5-fdda-498a-918b-5889c1ebcafe" />
 *Pairwise Pearson correlation between the (flattened) MFCC, Δ MFCC, and ΔΔ MFCC feature families across the corpus. The static MFCC channel is essentially uncorrelated with Δ (r ≈ −0.01) and moderately anti-correlated with ΔΔ (r ≈ −0.49); Δ and ΔΔ are only weakly correlated (r ≈ −0.03) — the three channels are not simple redundant restatements of one another.*
 
 **Note on figures:** the waveform and spectrogram images in this README are provided for **illustrative acoustic visualization only**. The CNN's actual input, verified directly in the feature-extraction code, is the 120 × 313 MFCC + Δ + ΔΔ tensor described above.
@@ -230,8 +230,6 @@ Because partitioning is speaker-level rather than recording-level, class balance
 
 > **Note:** the repository also contains an earlier model (`best_cnn_model.keras` / `final_cnn_model.keras`, referred to here as **CNN V1**) trained with `class_weight="balanced"` (`sklearn.utils.class_weight.compute_class_weight`). The results reported throughout this README and the accompanying paper are for **CNN V2**, which does not use explicit class weighting in its training call — the recall/precision asymmetry seen in its results is an emergent property of the class-imbalanced training data rather than an explicit re-weighting scheme.
 
-![CNN feature extraction and classifier pipeline](assets/ChatGPT_Image_Aug_13__2026__12_56_14_AM.png)
-*The MFCC + Δ + ΔΔ feature tensor is consumed by the CNN, which learns local acoustic patterns for classification via stacked convolution, pooling, and regularization.*
 
 ---
 
@@ -249,7 +247,8 @@ Evaluated on the held-out, speaker-disjoint test set (2,152 recordings, 7 speake
 | F1-score (Stuttered) | 82.26% |
 | ROC-AUC | 96.89% |
 
-![Performance evaluation of CNN V2](assets/Figure_CNN_V2_Performance_Metrics.png)
+<img width="6540" height="4140" alt="Figure_CNN_V2_Performance_Metrics" src="https://github.com/user-attachments/assets/3dd52fff-b131-4ff9-a98e-c29cad4ea445" />
+
 *Overall test-set performance of CNN V2: accuracy, precision, recall, F1-score, and ROC-AUC.*
 
 ### Class-wise performance
@@ -263,20 +262,24 @@ Evaluated on the held-out, speaker-disjoint test set (2,152 recordings, 7 speake
 
 ### Confusion matrix
 
-![CNN V2 confusion matrix](assets/Figure_5_Confusion_Matrix.png)
+<img width="4044" height="4130" alt="Figure_5_Confusion_Matrix" src="https://github.com/user-attachments/assets/6d4b482d-1412-43e0-9461-cd91d5508be8" />
+
 *CNN V2 test-set confusion matrix. TN = 1,548, FP = 166, FN = 16, TP = 422 (positive class = Stuttered). All summary metrics were numerically re-derived from this matrix and found to be internally consistent (e.g., Accuracy = (1,548+422)/2,152 = 91.54%; Recall = 422/(422+16) = 96.35%).*
 
 ### ROC and Precision–Recall curves
 
-![ROC and Precision-Recall curves](assets/Figure_6_ROC_PR_curves.png)
+<img width="6520" height="2620" alt="Figure_6_ROC_PR_curves" src="https://github.com/user-attachments/assets/7860a115-526d-44ff-b4a0-b7c0b6418256" />
+
 *ROC curve (AUC = 0.9689) and Precision–Recall curve (AP = 0.8508) for CNN V2 on the test set. The ROC-AUC substantially exceeds the default-threshold accuracy, indicating the model's continuous probability scores separate the two classes well and that the precision/recall trade-off could be adjusted post hoc via threshold selection.*
 
 ### Training behavior
 
-![Training vs validation accuracy](assets/training_accuracy.png)
+<img width="3000" height="1800" alt="training_accuracy" src="https://github.com/user-attachments/assets/ea740ce0-42ec-4b78-916f-19ab7bed073e" />
+
 *Training vs. validation accuracy across epochs.*
 
-![Training vs validation loss](assets/training_loss.png)
+<img width="3000" height="1800" alt="training_loss" src="https://github.com/user-attachments/assets/19278430-5b65-4479-9e4c-8132b895cd74" />
+
 *Training vs. validation loss across epochs.*
 
 **Reported as-is, not silently reconciled:** the plotted training curves show training accuracy rising smoothly toward ~96% while validation accuracy plateaus in roughly the 50%–62% range, with a non-monotonic validation loss (a pattern generally associated with overfitting or optimization instability). This is not straightforwardly consistent with the 91.54% accuracy reported on the held-out test set above. Because it could not be confirmed from the supplied materials whether the plotted training run corresponds exactly to the checkpoint (`cnn_v2_best.keras`) evaluated for the test-set metrics, this discrepancy is stated explicitly here (as in the accompanying paper, Sections 5.5 and 7) rather than resolved, and the plotted training dynamics should be interpreted with corresponding caution.
