@@ -97,7 +97,41 @@ Dysfluent → Stuttered      (1)
 This reflects a clinically motivated distinction: both Normal recordings (non-stuttering speakers) and Fluent recordings (fluent utterances from speakers who stutter) are perceptually non-disfluent at the utterance level, while Dysfluent recordings contain audible stuttering behavior. This logic is implemented directly as a `create_binary_label` function mapping `{"normal", "fluent"} → 0` and `{"dysfluent"} → 1`.
 
 ---
+#  Application Preview
 
+##  Landing Page
+
+<img width="900" alt="Landing Page" src="https://github.com/user-attachments/assets/d5aa5784-0c1d-4558-ba43-1c9ec1a3d28c" />
+
+---
+
+##  Audio Analysis
+
+<img width="700" alt="Audio Analysis" src="https://github.com/user-attachments/assets/85ba906e-0fb9-4e2e-9acb-23336177cba5" />
+
+---
+
+##  Prediction Results
+
+<img width="700" alt="Prediction Result" src="https://github.com/user-attachments/assets/55c431c2-2f59-461a-a4b2-8e5d37b8f2ce" />
+
+<br>
+
+<img width="700" alt="Confidence Score" src="https://github.com/user-attachments/assets/feee396e-789a-478b-ac94-77f37898addf" />
+
+---
+
+##  Analysis History
+
+<img width="700" alt="History" src="https://github.com/user-attachments/assets/12312fc9-701a-4c27-9b3c-255cb0c6bfab" />
+
+---
+
+##  Login Page
+
+<img width="350" alt="Login Page" src="https://github.com/user-attachments/assets/473ce495-b1c2-455e-84dc-9a867b6f83d2" />
+
+---
 ##  Dataset Organization
 
 Folder structure as referenced in the project's preprocessing/figure-generation code:
