@@ -1,0 +1,30 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: cleanup-and-test-task
+spec:
+  steps:
+    - name: cleanup
+      image: alpine:3.20
+      script: |
+        #!/bin/sh
+        echo "Cleaning up temporary build and cache artifacts..."
+        rm -rf __pycache__ .pytest_cache .coverage build dist coverage node_modules/.cache || true
+        echo "Cleanup complete."
+
+    - name: test
+      image: python:3.10-slim
+      script: |
+        #!/bin/sh
+        set -e
+        if [ -f requirements.txt ]; then
+          pip install --no-cache-dir -r requirements.txt
+        fi
+        # Run unit tests with nose / nosetests (or use `npm test` / `npx jest` for Jest)
+        if command -v nosetests >/dev/null 2>&1; then
+          nosetests
+        elif command -v nose2 >/dev/null 2>&1; then
+          nose2
+        else
+          python -m unittest discover -s tests -p "test_*.py"
+        fi
